@@ -1,0 +1,30 @@
+{
+  "name": "can-handle",
+  "version": "0.0.1",
+  "description": "Handle and process commands",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/0xWaleed/command-handler.git"
+  },
+  "keywords": [
+    "command",
+    "handler",
+    "cmd"
+  ],
+  "author": "0xWaleed <imwaleed@outlook.sa>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/0xWaleed/command-handler/issues"
+  },
+  "homepage": "https://github.com/0xWaleed/command-handler#readme",
+  "devDependencies": {
+    "@types/mocha": "^8.2.0",
+    "mocha": "^8.2.1",
+    "ts-node": "^9.1.1",
+    "typescript": "^4.1.3"
+  }
+}
