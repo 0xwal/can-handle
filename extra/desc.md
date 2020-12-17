@@ -6,9 +6,9 @@ any event for the provider.
 * Provider
   * Send Messages.
   * Receive Messages.
-  * Invoke Handler
+  * Handle Events.
 * Handler
-  * Handle
-  * Register Global Command
-  * Register Command
-  * 
+  * Handle.
+  * Register Global Middleware.
+  * Register Middleware.
+  * Register Command.
