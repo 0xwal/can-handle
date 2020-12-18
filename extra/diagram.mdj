@@ -270,7 +270,7 @@
 											"top": 327,
 											"width": 540,
 											"height": 15,
-											"text": "+handle(line: string, event: HandlerEventData): Promise<any>",
+											"text": "+handle(line: string, event: CommandEventData): Promise<any>",
 											"horizontalAlignment": 0
 										}
 									],
@@ -1025,7 +1025,7 @@
 											"top": 432,
 											"width": 423,
 											"height": 15,
-											"text": "+handle(event: HandlerEventData): Promise<void>",
+											"text": "+handle(event: CommandEventData): Promise<void>",
 											"horizontalAlignment": 0
 										}
 									],
@@ -1136,7 +1136,7 @@
 											"top": 503,
 											"width": 144,
 											"height": 15,
-											"text": "HandlerEventData"
+											"text": "CommandEventData"
 										},
 										{
 											"_type": "LabelView",
@@ -2195,7 +2195,7 @@
 					"_parent": {
 						"$ref": "AAAAAAF2aqALMUhOIcw="
 					},
-					"name": "HandlerEventData",
+					"name": "CommandEventData",
 					"attributes": [
 						{
 							"_type": "UMLAttribute",
