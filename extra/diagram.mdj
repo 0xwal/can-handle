@@ -236,7 +236,7 @@
 											"top": 333,
 											"width": 513,
 											"height": 15,
-											"text": "+removeCommand(command: string): void",
+											"text": "+unregisterCommand(command: string): void",
 											"horizontalAlignment": 0
 										},
 										{
@@ -954,7 +954,7 @@
 							"_parent": {
 								"$ref": "AAAAAAF2aqHMIkiA1oQ="
 							},
-							"name": "removeCommand",
+							"name": "unregisterCommand",
 							"parameters": [
 								{
 									"_type": "UMLParameter",
