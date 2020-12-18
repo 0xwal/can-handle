@@ -74,7 +74,7 @@ describe('CommandHandler', () =>
     describe('unregisterCommand', () =>
     {
 
-        it('should exist', async () =>
+        it('should exist', () =>
         {
             expect(CommandHandler.prototype).to.haveOwnProperty('unregisterCommand');
         });
@@ -101,7 +101,7 @@ describe('CommandHandler', () =>
 
     describe('globalMiddlewares', () =>
     {
-        it('should exist', async () =>
+        it('should exist', () =>
         {
             expect(CommandHandler.prototype).to.haveOwnProperty('globalMiddlewares');
         });
@@ -109,19 +109,19 @@ describe('CommandHandler', () =>
 
     describe('registerGlobalMiddleware', () =>
     {
-        it('should exist', async () =>
+        it('should exist', () =>
         {
             expect(CommandHandler.prototype).to.haveOwnProperty('registerGlobalMiddleware');
         });
 
-        it('should able to register global middleware', async () =>
+        it('should able to register global middleware', () =>
         {
             fakeMiddleware.identifier.returns('fake-middleware');
             commandHandler.registerGlobalMiddleware(fakeMiddleware);
             expect(commandHandler.globalMiddlewares['fake-middleware']).not.to.undefined;
         });
 
-        it('should throw `MiddlewareIdentifierException` when middleware has falsy name', async () =>
+        it('should throw `MiddlewareIdentifierException` when middleware has falsy name', () =>
         {
             fakeMiddleware.identifier.returns(undefined as unknown as string);
             expect(() =>
@@ -130,7 +130,7 @@ describe('CommandHandler', () =>
             }).to.throw(MiddlewareIdentifierException);
         });
 
-        it('should register only one middleware if they have duplicate identifier', async () =>
+        it('should register only one middleware if they have duplicate identifier', () =>
         {
             fakeMiddleware.identifier.returns('fake-middleware');
             const anotherFakeMiddleware = sinon.stub(new FakeMiddleware());
@@ -143,12 +143,12 @@ describe('CommandHandler', () =>
 
     describe('unregisterGlobalMiddleware', () =>
     {
-        it('should exist', async () =>
+        it('should exist', () =>
         {
             expect(CommandHandler.prototype).to.haveOwnProperty('unregisterGlobalMiddleware');
         });
 
-        it('should able to remove the global middleware', async () =>
+        it('should able to remove the global middleware', () =>
         {
             fakeMiddleware.identifier.returns('fake-middleware');
             commandHandler.registerGlobalMiddleware(fakeMiddleware);
@@ -156,11 +156,12 @@ describe('CommandHandler', () =>
             expect(commandHandler.globalMiddlewares['fake-middleware']).to.be.undefined;
         });
 
-        it('should throw when trying to remove unregistered middleware', async () =>
+        it('should throw when trying to remove unregistered middleware', () =>
         {
-            expect(() => {
+            expect(() =>
+            {
                 commandHandler.unregisterGlobalMiddleware('fake-middleware');
-            }).to.throw(MiddlewareNotExistException)
+            }).to.throw(MiddlewareNotExistException);
         });
 
     });
