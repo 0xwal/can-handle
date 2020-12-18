@@ -1,6 +1,6 @@
 import {expect} from 'chai';
 import sinon from 'sinon';
-import {CommandHandler, CommandInterface, CommandNameRequiredException, CommandNotExistException, MiddlewareIdentifierException, MiddlewareInterface} from '../../src';
+import {CommandHandler, CommandInterface, CommandNameRequiredException, CommandNotExistException, MiddlewareIdentifierException, MiddlewareInterface, MiddlewareNotExistException} from '../../src';
 
 
 describe('CommandHandler', () =>
@@ -139,6 +139,30 @@ describe('CommandHandler', () =>
             commandHandler.registerGlobalMiddleware(anotherFakeMiddleware);
             expect(Object.values(commandHandler.globalMiddlewares)).length(1);
         });
+    });
+
+    describe('unregisterGlobalMiddleware', () =>
+    {
+        it('should exist', async () =>
+        {
+            expect(CommandHandler.prototype).to.haveOwnProperty('unregisterGlobalMiddleware');
+        });
+
+        it('should able to remove the global middleware', async () =>
+        {
+            fakeMiddleware.identifier.returns('fake-middleware');
+            commandHandler.registerGlobalMiddleware(fakeMiddleware);
+            commandHandler.unregisterGlobalMiddleware('fake-middleware');
+            expect(commandHandler.globalMiddlewares['fake-middleware']).to.be.undefined;
+        });
+
+        it('should throw when trying to remove unregistered middleware', async () =>
+        {
+            expect(() => {
+                commandHandler.unregisterGlobalMiddleware('fake-middleware');
+            }).to.throw(MiddlewareNotExistException)
+        });
+
     });
 });
 

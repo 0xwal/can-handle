@@ -1,5 +1,5 @@
 import {CommandInterface} from './command.interface';
-import {CommandNameRequiredException, CommandNotExistException, MiddlewareIdentifierException} from './exceptions';
+import {CommandNameRequiredException, CommandNotExistException, MiddlewareIdentifierException, MiddlewareNotExistException} from './exceptions';
 import {MiddlewareInterface} from './middleware.interface';
 
 
@@ -46,4 +46,11 @@ export class CommandHandler
         this._middlewares[middleware.identifier()] = middleware;
     }
 
+    public unregisterGlobalMiddleware(identifier: string)
+    {
+        if (!this._middlewares[identifier]) {
+            throw new MiddlewareNotExistException(identifier);
+        }
+        delete this._middlewares[identifier];
+    }
 }
