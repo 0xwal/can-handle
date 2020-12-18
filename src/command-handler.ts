@@ -1,6 +1,7 @@
 import {CommandInterface} from './command.interface';
 import {CommandNameRequiredException, CommandNotExistException, MiddlewareIdentifierException, MiddlewareNotExistException} from './exceptions';
 import {MiddlewareInterface} from './middleware.interface';
+import {CommandEventData} from './command-event-data';
 
 
 declare type CommandsMap = { [key: string]: CommandInterface };
@@ -54,13 +55,14 @@ export class CommandHandler
         delete this._middlewares[identifier];
     }
 
-    public async handle(commandLine: string)
+    public async handle(commandLine: string, commandEventData: CommandEventData)
     {
         for (const middleware in this._middlewares) {
             if (!this._middlewares.hasOwnProperty(middleware)) {
                 continue;
             }
-            this._middlewares[middleware].handle();
+            this._middlewares[middleware].handle(commandEventData);
         }
+        this._commands[commandLine].handle(commandEventData);
     }
 }

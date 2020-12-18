@@ -1,6 +1,16 @@
 import {expect, use} from 'chai';
 import sinon from 'sinon';
-import {CommandHandler, CommandInterface, CommandNameRequiredException, CommandNotExistException, MiddlewareIdentifierException, MiddlewareInterface, MiddlewareNotExistException} from '../../src';
+import {
+    CommandEventData,
+    CommandHandler,
+    CommandInterface,
+    CommandNameRequiredException,
+    CommandNotExistException,
+    MiddlewareIdentifierException,
+    MiddlewareInterface,
+    MiddlewareNotExistException
+} from '../../src';
+
 import sinonChai from 'sinon-chai';
 
 
@@ -11,12 +21,14 @@ describe('CommandHandler', () =>
     let commandHandler: CommandHandler;
     let fakeCommand: sinon.SinonStubbedInstance<CommandInterface>;
     let fakeMiddleware: sinon.SinonStubbedInstance<MiddlewareInterface>;
+    let commandEventData: CommandEventData;
 
     beforeEach(() =>
     {
         commandHandler = new CommandHandler();
         fakeCommand = sinon.stub(new FakeCommand());
         fakeMiddleware = sinon.stub(new FakeMiddleware());
+        commandEventData = new CommandEventData();
     });
 
     afterEach(() =>
@@ -192,7 +204,7 @@ describe('CommandHandler', () =>
         {
             fakeMiddleware.identifier.returns('fake-middleware');
             commandHandler.registerGlobalMiddleware(fakeMiddleware);
-            commandHandler.handle('cmd-line');
+            commandHandler.handle('cmd-line', commandEventData);
             expect(fakeMiddleware.handle).to.be.calledOnce;
         });
 
@@ -206,8 +218,28 @@ describe('CommandHandler', () =>
             commandHandler.registerGlobalMiddleware(fakeMiddleware);
             commandHandler.registerGlobalMiddleware(anotherFakeMiddleware);
 
-            commandHandler.handle('cmd-line');
+            commandHandler.handle('cmd-line', commandEventData);
             sinon.assert.callOrder(fakeMiddleware.handle, anotherFakeMiddleware.handle);
+        });
+
+        it('should call global middlewares with `HandlerEventData`', () =>
+        {
+            fakeMiddleware.identifier.returns('fake-middleware');
+
+            commandHandler.registerGlobalMiddleware(fakeMiddleware);
+
+
+            commandHandler.handle('fake-command', commandEventData);
+
+            expect(fakeMiddleware.handle).calledOnceWith(commandEventData);
+        });
+
+        it('should call command handle with `CommandEventData`', () =>
+        {
+            fakeCommand.identifier.returns('fake-command');
+            commandHandler.registerCommand(fakeCommand);
+            commandHandler.handle('fake-command', commandEventData);
+            expect(fakeCommand.handle).to.be.calledOnceWith(commandEventData);
         });
 
     });
@@ -219,6 +251,11 @@ class FakeCommand implements CommandInterface
     identifier(): string
     {
         return '';
+    }
+
+    handle(): Promise<any>
+    {
+        return Promise.resolve(undefined);
     }
 
 }
