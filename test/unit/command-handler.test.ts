@@ -19,19 +19,19 @@ describe('CommandHandler', () =>
         {
             fakeCommand = sinon.stub(new FakeCommand());
         });
-        it('should exist', async () =>
+        it('should exist', () =>
         {
             expect(CommandHandler.prototype).haveOwnProperty('registerCommand');
         });
 
-        it('should able to register a command', async () =>
+        it('should able to register a command', () =>
         {
             fakeCommand.identifier.returns('fake-command');
             commandHandler.registerCommand(fakeCommand);
             expect(commandHandler.commands['fake-command']).to.be.not.undefined;
         });
 
-        it('should throw `CommandNameRequiredException` when `identifier` is falsy', async () =>
+        it('should throw `CommandNameRequiredException` when `identifier` is falsy', () =>
         {
             fakeCommand.identifier.returns(undefined as unknown as string);
             expect(() =>
@@ -40,7 +40,7 @@ describe('CommandHandler', () =>
             }).throws(CommandNameRequiredException);
         });
 
-        it('should able to remove a registered command', async () =>
+        it('should able to remove a registered command', () =>
         {
             fakeCommand.identifier.returns('fake-command');
             commandHandler.registerCommand(fakeCommand);
@@ -48,7 +48,7 @@ describe('CommandHandler', () =>
             expect(commandHandler.commands['fake-command']).to.be.undefined;
         });
 
-        it('should throw `CommandNotExistException` when `command` is not exist', async () =>
+        it('should throw `CommandNotExistException` when `command` is not exist', () =>
         {
             expect(() =>
             {
@@ -56,7 +56,7 @@ describe('CommandHandler', () =>
             }).throws(CommandNotExistException);
         });
 
-        it('should register last instance of command and not duplicate them', async () =>
+        it('should register last instance of command and not duplicate them', () =>
         {
             fakeCommand.identifier.returns('fake-command');
             commandHandler.registerCommand(fakeCommand);
@@ -69,6 +69,8 @@ describe('CommandHandler', () =>
             expect(commandHandler.commands['fake-command']).to.be.not.undefined;
             expect(Object.values(commandHandler.commands)).length(1);
         });
+
+
     });
 
     describe('commands', () =>
