@@ -53,4 +53,14 @@ export class CommandHandler
         }
         delete this._middlewares[identifier];
     }
+
+    public async handle(commandLine: string)
+    {
+        for (const middleware in this._middlewares) {
+            if (!this._middlewares.hasOwnProperty(middleware)) {
+                continue;
+            }
+            this._middlewares[middleware].handle();
+        }
+    }
 }

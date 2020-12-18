@@ -1,7 +1,10 @@
-import {expect} from 'chai';
+import {expect, use} from 'chai';
 import sinon from 'sinon';
 import {CommandHandler, CommandInterface, CommandNameRequiredException, CommandNotExistException, MiddlewareIdentifierException, MiddlewareInterface, MiddlewareNotExistException} from '../../src';
+import sinonChai from 'sinon-chai';
 
+
+use(sinonChai);
 
 describe('CommandHandler', () =>
 {
@@ -14,6 +17,27 @@ describe('CommandHandler', () =>
         commandHandler = new CommandHandler();
         fakeCommand = sinon.stub(new FakeCommand());
         fakeMiddleware = sinon.stub(new FakeMiddleware());
+    });
+
+    afterEach(() =>
+    {
+        sinon.verifyAndRestore();
+    });
+
+    describe('commands', () =>
+    {
+        it('should exists', () =>
+        {
+            expect(CommandHandler.prototype).haveOwnProperty('commands');
+        });
+
+        it('should returned registered command', () =>
+        {
+            expect(Object.values(commandHandler.commands)).length(0);
+            fakeCommand.identifier.returns('fake-id');
+            commandHandler.registerCommand(fakeCommand);
+            expect(Object.values(commandHandler.commands)).length(1);
+        });
     });
 
     describe('registerCommand', () =>
@@ -51,22 +75,6 @@ describe('CommandHandler', () =>
             commandHandler.registerCommand(anotherCommand);
 
             expect(commandHandler.commands['fake-command']).to.be.not.undefined;
-            expect(Object.values(commandHandler.commands)).length(1);
-        });
-    });
-
-    describe('commands', () =>
-    {
-        it('should exists', () =>
-        {
-            expect(CommandHandler.prototype).haveOwnProperty('commands');
-        });
-
-        it('should returned registered command', () =>
-        {
-            expect(Object.values(commandHandler.commands)).length(0);
-            fakeCommand.identifier.returns('fake-id');
-            commandHandler.registerCommand(fakeCommand);
             expect(Object.values(commandHandler.commands)).length(1);
         });
     });
@@ -172,6 +180,37 @@ describe('CommandHandler', () =>
         });
 
     });
+
+    describe('handle', () =>
+    {
+        it('should exist', () =>
+        {
+            expect(CommandHandler.prototype).to.haveOwnProperty('handle');
+        });
+
+        it('should call global middleware', () =>
+        {
+            fakeMiddleware.identifier.returns('fake-middleware');
+            commandHandler.registerGlobalMiddleware(fakeMiddleware);
+            commandHandler.handle('cmd-line');
+            expect(fakeMiddleware.handle).to.be.calledOnce;
+        });
+
+        it('should call global middlewares in order', () =>
+        {
+            fakeMiddleware.identifier.returns('fake-middleware');
+
+            const anotherFakeMiddleware = sinon.stub(new FakeMiddleware());
+            anotherFakeMiddleware.identifier.returns('another-fake-id');
+
+            commandHandler.registerGlobalMiddleware(fakeMiddleware);
+            commandHandler.registerGlobalMiddleware(anotherFakeMiddleware);
+
+            commandHandler.handle('cmd-line');
+            sinon.assert.callOrder(fakeMiddleware.handle, anotherFakeMiddleware.handle);
+        });
+
+    });
 });
 
 
@@ -190,5 +229,10 @@ class FakeMiddleware implements MiddlewareInterface
     identifier(): string
     {
         return '';
+    }
+
+    async handle(): Promise<void>
+    {
+
     }
 }
