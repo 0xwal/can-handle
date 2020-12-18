@@ -241,23 +241,6 @@
 										},
 										{
 											"_type": "UMLOperationView",
-											"_id": "AAAAAAF2bg86mkkTztg=",
-											"_parent": {
-												"$ref": "AAAAAAF2aqHMI0iJbW0="
-											},
-											"model": {
-												"$ref": "AAAAAAF2bg86jUkQ8k8="
-											},
-											"font": "JetBrains Mono ;15;0",
-											"left": 197,
-											"top": 310,
-											"width": 540,
-											"height": 15,
-											"text": "+handle(line: string, event: HandlerEventData): Promise<any>",
-											"horizontalAlignment": 0
-										},
-										{
-											"_type": "UMLOperationView",
 											"_id": "AAAAAAF2dgcwwlt5r9M=",
 											"_parent": {
 												"$ref": "AAAAAAF2aqHMI0iJbW0="
@@ -267,10 +250,27 @@
 											},
 											"font": "JetBrains Mono ;15;0",
 											"left": 197,
-											"top": 327,
+											"top": 310,
 											"width": 540,
 											"height": 15,
 											"text": "+unregisterGlobalMiddleware(idenifier: string): void",
+											"horizontalAlignment": 0
+										},
+										{
+											"_type": "UMLOperationView",
+											"_id": "AAAAAAF2bg86mkkTztg=",
+											"_parent": {
+												"$ref": "AAAAAAF2aqHMI0iJbW0="
+											},
+											"model": {
+												"$ref": "AAAAAAF2bg86jUkQ8k8="
+											},
+											"font": "JetBrains Mono ;15;0",
+											"left": 197,
+											"top": 327,
+											"width": 540,
+											"height": 15,
+											"text": "+handle(line: string, event: HandlerEventData): Promise<any>",
 											"horizontalAlignment": 0
 										}
 									],
@@ -1924,6 +1924,34 @@
 						},
 						{
 							"_type": "UMLOperation",
+							"_id": "AAAAAAF2dgcwVFt2xQM=",
+							"_parent": {
+								"$ref": "AAAAAAF2aqHMIkiA1oQ="
+							},
+							"name": "unregisterGlobalMiddleware",
+							"parameters": [
+								{
+									"_type": "UMLParameter",
+									"_id": "AAAAAAF2dgeiL1ub5Bo=",
+									"_parent": {
+										"$ref": "AAAAAAF2dgcwVFt2xQM="
+									},
+									"name": "idenifier",
+									"type": "string"
+								},
+								{
+									"_type": "UMLParameter",
+									"_id": "AAAAAAF2dge6cVvCHiw=",
+									"_parent": {
+										"$ref": "AAAAAAF2dgcwVFt2xQM="
+									},
+									"type": "void",
+									"direction": "return"
+								}
+							]
+						},
+						{
+							"_type": "UMLOperation",
 							"_id": "AAAAAAF2bg86jUkQ8k8=",
 							"_parent": {
 								"$ref": "AAAAAAF2aqHMIkiA1oQ="
@@ -1957,34 +1985,6 @@
 										"$ref": "AAAAAAF2bg86jUkQ8k8="
 									},
 									"type": "Promise<any>",
-									"direction": "return"
-								}
-							]
-						},
-						{
-							"_type": "UMLOperation",
-							"_id": "AAAAAAF2dgcwVFt2xQM=",
-							"_parent": {
-								"$ref": "AAAAAAF2aqHMIkiA1oQ="
-							},
-							"name": "unregisterGlobalMiddleware",
-							"parameters": [
-								{
-									"_type": "UMLParameter",
-									"_id": "AAAAAAF2dgeiL1ub5Bo=",
-									"_parent": {
-										"$ref": "AAAAAAF2dgcwVFt2xQM="
-									},
-									"name": "idenifier",
-									"type": "string"
-								},
-								{
-									"_type": "UMLParameter",
-									"_id": "AAAAAAF2dge6cVvCHiw=",
-									"_parent": {
-										"$ref": "AAAAAAF2dgcwVFt2xQM="
-									},
-									"type": "void",
 									"direction": "return"
 								}
 							]

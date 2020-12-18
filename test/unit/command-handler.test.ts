@@ -105,6 +105,13 @@ describe('CommandHandler', () =>
         {
             expect(CommandHandler.prototype).to.haveOwnProperty('globalMiddlewares');
         });
+
+        it('should return registered middlewares', async () =>
+        {
+            fakeMiddleware.identifier.returns('fake-middleware');
+            commandHandler.registerGlobalMiddleware(fakeMiddleware);
+            expect(commandHandler.globalMiddlewares['fake-middleware']).not.to.be.undefined;
+        });
     });
 
     describe('registerGlobalMiddleware', () =>
