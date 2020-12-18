@@ -173,40 +173,6 @@
 									"subViews": [
 										{
 											"_type": "UMLOperationView",
-											"_id": "AAAAAAF2bg6slEkFVOM=",
-											"_parent": {
-												"$ref": "AAAAAAF2aqHMI0iJbW0="
-											},
-											"model": {
-												"$ref": "AAAAAAF2bg6sZ0kC36k="
-											},
-											"font": "JetBrains Mono ;15;0",
-											"left": 413,
-											"top": 282,
-											"width": 513,
-											"height": 15,
-											"text": "+registerMiddleware(): void",
-											"horizontalAlignment": 0
-										},
-										{
-											"_type": "UMLOperationView",
-											"_id": "AAAAAAF2bg8mFkkMGRY=",
-											"_parent": {
-												"$ref": "AAAAAAF2aqHMI0iJbW0="
-											},
-											"model": {
-												"$ref": "AAAAAAF2bg8mB0kJbkA="
-											},
-											"font": "JetBrains Mono ;15;0",
-											"left": 413,
-											"top": 299,
-											"width": 513,
-											"height": 15,
-											"text": "+registerGlobalMiddleware()",
-											"horizontalAlignment": 0
-										},
-										{
-											"_type": "UMLOperationView",
 											"_id": "AAAAAAF2bh0SHkm68R8=",
 											"_parent": {
 												"$ref": "AAAAAAF2aqHMI0iJbW0="
@@ -216,7 +182,7 @@
 											},
 											"font": "JetBrains Mono ;15;0",
 											"left": 413,
-											"top": 316,
+											"top": 282,
 											"width": 513,
 											"height": 15,
 											"text": "+registerCommand(command: CommandInterface)",
@@ -233,10 +199,44 @@
 											},
 											"font": "JetBrains Mono ;15;0",
 											"left": 413,
-											"top": 333,
+											"top": 299,
 											"width": 513,
 											"height": 15,
 											"text": "+unregisterCommand(command: string): void",
+											"horizontalAlignment": 0
+										},
+										{
+											"_type": "UMLOperationView",
+											"_id": "AAAAAAF2ddSVl1XRZRY=",
+											"_parent": {
+												"$ref": "AAAAAAF2aqHMI0iJbW0="
+											},
+											"model": {
+												"$ref": "AAAAAAF2ddSVcVXOz4U="
+											},
+											"font": "JetBrains Mono ;15;0",
+											"left": 413,
+											"top": 316,
+											"width": 513,
+											"height": 15,
+											"text": "+commands(): Commands",
+											"horizontalAlignment": 0
+										},
+										{
+											"_type": "UMLOperationView",
+											"_id": "AAAAAAF2bg8mFkkMGRY=",
+											"_parent": {
+												"$ref": "AAAAAAF2aqHMI0iJbW0="
+											},
+											"model": {
+												"$ref": "AAAAAAF2bg8mB0kJbkA="
+											},
+											"font": "JetBrains Mono ;15;0",
+											"left": 413,
+											"top": 333,
+											"width": 513,
+											"height": 15,
+											"text": "+registerGlobalMiddleware(middleware: MiddlewareFunction)",
 											"horizontalAlignment": 0
 										},
 										{
@@ -904,33 +904,6 @@
 					"operations": [
 						{
 							"_type": "UMLOperation",
-							"_id": "AAAAAAF2bg6sZ0kC36k=",
-							"_parent": {
-								"$ref": "AAAAAAF2aqHMIkiA1oQ="
-							},
-							"name": "registerMiddleware",
-							"parameters": [
-								{
-									"_type": "UMLParameter",
-									"_id": "AAAAAAF2boBzukndWuo=",
-									"_parent": {
-										"$ref": "AAAAAAF2bg6sZ0kC36k="
-									},
-									"type": "void",
-									"direction": "return"
-								}
-							]
-						},
-						{
-							"_type": "UMLOperation",
-							"_id": "AAAAAAF2bg8mB0kJbkA=",
-							"_parent": {
-								"$ref": "AAAAAAF2aqHMIkiA1oQ="
-							},
-							"name": "registerGlobalMiddleware"
-						},
-						{
-							"_type": "UMLOperation",
 							"_id": "AAAAAAF2bh0R/km3ego=",
 							"_parent": {
 								"$ref": "AAAAAAF2aqHMIkiA1oQ="
@@ -973,6 +946,44 @@
 									},
 									"type": "void",
 									"direction": "return"
+								}
+							]
+						},
+						{
+							"_type": "UMLOperation",
+							"_id": "AAAAAAF2ddSVcVXOz4U=",
+							"_parent": {
+								"$ref": "AAAAAAF2aqHMIkiA1oQ="
+							},
+							"name": "commands",
+							"parameters": [
+								{
+									"_type": "UMLParameter",
+									"_id": "AAAAAAF2ddT7XlXk5KE=",
+									"_parent": {
+										"$ref": "AAAAAAF2ddSVcVXOz4U="
+									},
+									"type": "Commands",
+									"direction": "return"
+								}
+							]
+						},
+						{
+							"_type": "UMLOperation",
+							"_id": "AAAAAAF2bg8mB0kJbkA=",
+							"_parent": {
+								"$ref": "AAAAAAF2aqHMIkiA1oQ="
+							},
+							"name": "registerGlobalMiddleware",
+							"parameters": [
+								{
+									"_type": "UMLParameter",
+									"_id": "AAAAAAF2ddWzHlY1T3U=",
+									"_parent": {
+										"$ref": "AAAAAAF2bg8mB0kJbkA="
+									},
+									"name": "middleware",
+									"type": "MiddlewareFunction"
 								}
 							]
 						},
