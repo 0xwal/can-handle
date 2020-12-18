@@ -4,7 +4,7 @@
   "description": "Handle and process commands",
   "main": "dist/index.js",
   "scripts": {
-    "test": "mocha"
+    "test": "mocha -r ts-node/register \\\"test/**/*.test.ts\\\""
   },
   "repository": {
     "type": "git",
@@ -22,8 +22,12 @@
   },
   "homepage": "https://github.com/0xWaleed/command-handler#readme",
   "devDependencies": {
+    "@types/chai": "^4.2.14",
     "@types/mocha": "^8.2.0",
+    "@types/sinon": "^9.0.9",
+    "chai": "^4.2.0",
     "mocha": "^8.2.1",
+    "sinon": "^9.2.2",
     "ts-node": "^9.1.1",
     "typescript": "^4.1.3"
   }
