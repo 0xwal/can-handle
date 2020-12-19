@@ -338,6 +338,18 @@ describe('CommandHandler', () =>
                 await commandHandler.handle('fake-command arg', commandEventData);
                 expect(fakeCommand.handle).to.be.calledOnceWithExactly(sinon.match.any, 'arg');
             });
+
+            it('should pass multiple arguments to command handle', async () =>
+            {
+                fakeCommand.identifier.returns('fake-command');
+                fakeCommand.argumentsCount.returns(2);
+
+                commandHandler.registerCommand(fakeCommand);
+
+                await commandHandler.handle('fake-command arg1 arg2', commandEventData);
+                expect(fakeCommand.handle).to.be.calledOnceWithExactly(sinon.match.any, 'arg1', 'arg2');
+            });
+
         });
 
 
