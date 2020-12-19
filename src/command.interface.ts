@@ -5,7 +5,7 @@ export interface CommandInterface
 {
     identifier(): string;
 
-    handle(commandEventData: CommandEventData, args: string[]): Promise<any>;
+    handle(commandEventData: CommandEventData, ...args: string[]): Promise<any>;
 
     argumentsCount(): number;
 }

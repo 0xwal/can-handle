@@ -58,22 +58,21 @@ export class CommandHandler
 
     public async handle(commandLine: string, commandEventData: CommandEventData)
     {
+        if (!commandLine) {
+            throw new InvalidCommandException();
+        }
         const parsedCommandLine = parseLine(commandLine);
         const theCommand = parsedCommandLine.splice(0, 1);
         for (const middleware in this._middlewares) {
-            if (!this._middlewares.hasOwnProperty(middleware)) {
-                continue;
-            }
             this._middlewares[middleware].handle(commandEventData, ...parsedCommandLine);
         }
-        const command = this._commands[commandLine];
+        const command = this._commands[theCommand[0]];
         if (!command) {
             throw new InvalidCommandException();
         }
-        if (command.argumentsCount() > parsedCommandLine.length)
-        {
+        if (command.argumentsCount() > parsedCommandLine.length) {
             throw new InvalidArgumentsException();
         }
-        command.handle(commandEventData, ['arg']);
+        command.handle(commandEventData, ...['arg']);
     }
 }
