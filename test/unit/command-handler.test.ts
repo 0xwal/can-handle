@@ -5,7 +5,7 @@ import {
     CommandHandler,
     CommandInterface,
     CommandNameRequiredException,
-    CommandNotExistException,
+    CommandNotExistException, InvalidArgumentsException,
     InvalidCommandException,
     MiddlewareIdentifierException,
     MiddlewareInterface,
@@ -286,6 +286,18 @@ describe('CommandHandler', () =>
         {
             return expect(commandHandler.handle('unknown-command', commandEventData)).to.eventually.rejectedWith(InvalidCommandException);
         });
+
+        it('should throw exception when command arguments is smaller than the required arguments', () =>
+        {
+            fakeCommand.identifier.returns('fake-command');
+            fakeCommand.argumentsCount.returns(1);
+
+            commandHandler.registerCommand(fakeCommand);
+
+            return expect(commandHandler.handle('fake-command', commandEventData))
+                .to.eventually.rejectedWith(InvalidArgumentsException);
+
+        });
     });
 });
 
@@ -300,6 +312,11 @@ class FakeCommand implements CommandInterface
     handle(): Promise<any>
     {
         return Promise.resolve(undefined);
+    }
+
+    argumentsCount(): number
+    {
+        return 0;
     }
 
 }
