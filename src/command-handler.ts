@@ -61,18 +61,39 @@ export class CommandHandler
         if (!commandLine) {
             throw new InvalidCommandException();
         }
-        const parsedCommandLine = parseLine(commandLine);
-        const theCommand = parsedCommandLine.splice(0, 1);
-        for (const middleware in this._middlewares) {
-            this._middlewares[middleware].handle(commandEventData, ...parsedCommandLine);
-        }
-        const command = this._commands[theCommand[0]];
-        if (!command) {
+
+        const { command, args } = CommandHandler.parseCommandLine(commandLine);
+
+        this.invokeGlobalMiddlewares(commandEventData, args);
+
+        const commandObject = this._commands[command];
+
+        if (!commandObject) {
             throw new InvalidCommandException();
         }
-        if (command.argumentsCount() > parsedCommandLine.length) {
+
+        if (commandObject.argumentsCount() > args.length) {
             throw new InvalidArgumentsException();
         }
-        return command.handle(commandEventData, ...parsedCommandLine);
+
+        return commandObject.handle(commandEventData, ...args);
+    }
+
+    private invokeGlobalMiddlewares(commandEventData: CommandEventData, parsedCommandLine: string[])
+    {
+        //todo: we need to make sure middlewares are called in order even with long operation
+        for (const middleware in this._middlewares) {
+            if (!this._middlewares.hasOwnProperty(middleware)) {
+                continue;
+            }
+            this._middlewares[middleware].handle(commandEventData, ...parsedCommandLine);
+        }
+    }
+
+    private static parseCommandLine(commandLine: string)
+    {
+        const args = parseLine(commandLine);
+        const [command] = args.splice(0, 1);
+        return { command, args };
     }
 }
