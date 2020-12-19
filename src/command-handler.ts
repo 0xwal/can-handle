@@ -2,6 +2,7 @@ import {CommandInterface} from './command.interface';
 import {CommandNameRequiredException, CommandNotExistException, InvalidCommandException, MiddlewareIdentifierException, MiddlewareNotExistException} from './exceptions';
 import {MiddlewareInterface} from './middleware.interface';
 import {CommandEventData} from './command-event-data';
+import {parseLine} from 'parse-line';
 
 
 declare type CommandsMap = { [key: string]: CommandInterface };
@@ -57,17 +58,18 @@ export class CommandHandler
 
     public async handle(commandLine: string, commandEventData: CommandEventData)
     {
+        const parsedCommandLine = parseLine(commandLine);
+        const theCommand = parsedCommandLine.splice(0, 1);
         for (const middleware in this._middlewares) {
             if (!this._middlewares.hasOwnProperty(middleware)) {
                 continue;
             }
-            this._middlewares[middleware].handle(commandEventData);
+            this._middlewares[middleware].handle(commandEventData, ...parsedCommandLine);
         }
         const command = this._commands[commandLine];
-        if (!command)
-        {
+        if (!command) {
             throw new InvalidCommandException();
         }
-        command.handle(commandEventData);
+        command.handle(commandEventData, ['arg']);
     }
 }
