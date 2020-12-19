@@ -234,6 +234,23 @@ describe('CommandHandler', () =>
             expect(fakeMiddleware.handle).calledOnceWith(commandEventData);
         });
 
+        it('should pass the edited HandlerEventData to next middleware', () =>
+        {
+            fakeMiddleware.identifier.returns('fake-middleware');
+            fakeMiddleware.handle.callsFake(async (commandEventData: CommandEventData): Promise<void> =>
+            {
+                commandEventData.data = 5;
+            });
+            commandHandler.registerGlobalMiddleware(fakeMiddleware);
+
+            const anotherFakeMiddleware = sinon.stub(new FakeMiddleware());
+            anotherFakeMiddleware.identifier.returns('another-fake-middleware');
+            commandHandler.registerGlobalMiddleware(anotherFakeMiddleware);
+
+            commandHandler.handle('fake-command', commandEventData);
+            expect(anotherFakeMiddleware.handle).calledOnceWith(sinon.match({ data: 5 }));
+        });
+
         it('should call command handle with `CommandEventData`', () =>
         {
             fakeCommand.identifier.returns('fake-command');
