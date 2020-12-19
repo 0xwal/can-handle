@@ -206,15 +206,19 @@ describe('CommandHandler', () =>
 
         describe('global middleware', () =>
         {
-            it('should call global middleware', () =>
+            it('should call global middleware', async () =>
             {
                 fakeMiddleware.identifier.returns('fake-middleware');
                 commandHandler.registerGlobalMiddleware(fakeMiddleware);
-                commandHandler.handle('cmd-line', commandEventData);
+
+                fakeCommand.identifier.returns('fake-command');
+                commandHandler.registerCommand(fakeCommand);
+
+                await commandHandler.handle('fake-command', commandEventData);
                 expect(fakeMiddleware.handle).to.be.calledOnce;
             });
 
-            it('should call global middlewares in order', () =>
+            it('should call global middlewares in order', async () =>
             {
                 fakeMiddleware.identifier.returns('fake-middleware');
 
@@ -224,55 +228,70 @@ describe('CommandHandler', () =>
                 commandHandler.registerGlobalMiddleware(fakeMiddleware);
                 commandHandler.registerGlobalMiddleware(anotherFakeMiddleware);
 
-                commandHandler.handle('cmd-line', commandEventData);
+                fakeCommand.identifier.returns('fake-command');
+                commandHandler.registerCommand(fakeCommand);
+
+                await commandHandler.handle('fake-command', commandEventData);
                 sinon.assert.callOrder(fakeMiddleware.handle, anotherFakeMiddleware.handle);
             });
 
-            it('should call global middlewares with `HandlerEventData`', () =>
+            it('should call global middlewares with `HandlerEventData`', async () =>
             {
                 fakeMiddleware.identifier.returns('fake-middleware');
 
                 commandHandler.registerGlobalMiddleware(fakeMiddleware);
 
+                fakeCommand.identifier.returns('fake-command');
+                commandHandler.registerCommand(fakeCommand);
 
-                commandHandler.handle('fake-command', commandEventData);
+                await commandHandler.handle('fake-command', commandEventData);
 
                 expect(fakeMiddleware.handle).calledOnceWith(commandEventData);
             });
 
-            it('should pass the edited `HandlerEventData` to next middleware', () =>
+            it('should pass the edited `HandlerEventData` to next middleware', async () =>
             {
                 fakeMiddleware.identifier.returns('fake-middleware');
                 fakeMiddleware.handle.callsFake(async (commandEventData: CommandEventData): Promise<void> =>
                 {
                     commandEventData.data = 5;
                 });
+
                 commandHandler.registerGlobalMiddleware(fakeMiddleware);
 
                 const anotherFakeMiddleware = sinon.stub(new FakeMiddleware());
                 anotherFakeMiddleware.identifier.returns('another-fake-middleware');
                 commandHandler.registerGlobalMiddleware(anotherFakeMiddleware);
 
-                commandHandler.handle('fake-command', commandEventData);
+                fakeCommand.identifier.returns('fake-command');
+                commandHandler.registerCommand(fakeCommand);
+
+                await commandHandler.handle('fake-command', commandEventData);
                 expect(anotherFakeMiddleware.handle).calledOnceWith(sinon.match({ data: 5 }));
             });
 
-            it('should pass the argument to middleware', () =>
+            it('should pass the argument to middleware', async () =>
             {
                 fakeMiddleware.identifier.returns('fake-middleware');
                 commandHandler.registerGlobalMiddleware(fakeMiddleware);
 
-                commandHandler.handle('fake-command arg', commandEventData);
+                fakeCommand.identifier.returns('fake-command');
+                commandHandler.registerCommand(fakeCommand);
+
+                await commandHandler.handle('fake-command arg', commandEventData);
 
                 expect(fakeMiddleware.handle).to.be.calledOnceWithExactly(sinon.match.any, 'arg');
             });
 
-            it('should pass multiple arguments in order', () =>
+            it('should pass multiple arguments in order', async () =>
             {
                 fakeMiddleware.identifier.returns('fake-middleware');
                 commandHandler.registerGlobalMiddleware(fakeMiddleware);
 
-                commandHandler.handle('fake-command arg1 arg2', commandEventData);
+                fakeCommand.identifier.returns('fake-command');
+                commandHandler.registerCommand(fakeCommand);
+
+                await commandHandler.handle('fake-command arg1 arg2', commandEventData);
 
                 expect(fakeMiddleware.handle).to.be.calledOnceWithExactly(sinon.match.any, 'arg1', 'arg2');
             });
@@ -280,11 +299,11 @@ describe('CommandHandler', () =>
 
         describe('command', () =>
         {
-            it('should call command handle with `CommandEventData`', () =>
+            it('should call command handle with `CommandEventData`', async () =>
             {
                 fakeCommand.identifier.returns('fake-command');
                 commandHandler.registerCommand(fakeCommand);
-                commandHandler.handle('fake-command', commandEventData);
+                await commandHandler.handle('fake-command', commandEventData);
                 expect(fakeCommand.handle).to.be.calledOnceWith(commandEventData);
             });
 
@@ -309,7 +328,7 @@ describe('CommandHandler', () =>
                 return expect(commandHandler.handle('', commandEventData)).to.eventually.rejectedWith(InvalidCommandException);
             });
 
-            it('should pass arguments to command handle', async () =>
+            it('should pass argument to command handle', async () =>
             {
                 fakeCommand.identifier.returns('fake-command');
                 fakeCommand.argumentsCount.returns(1);
