@@ -1,5 +1,5 @@
 import {CommandInterface} from './command.interface';
-import {CommandNameRequiredException, CommandNotExistException, MiddlewareIdentifierException, MiddlewareNotExistException} from './exceptions';
+import {CommandNameRequiredException, CommandNotExistException, InvalidCommandException, MiddlewareIdentifierException, MiddlewareNotExistException} from './exceptions';
 import {MiddlewareInterface} from './middleware.interface';
 import {CommandEventData} from './command-event-data';
 
@@ -63,6 +63,11 @@ export class CommandHandler
             }
             this._middlewares[middleware].handle(commandEventData);
         }
-        this._commands[commandLine].handle(commandEventData);
+        const command = this._commands[commandLine];
+        if (!command)
+        {
+            throw new InvalidCommandException();
+        }
+        command.handle(commandEventData);
     }
 }

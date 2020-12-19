@@ -6,14 +6,17 @@ import {
     CommandInterface,
     CommandNameRequiredException,
     CommandNotExistException,
+    InvalidCommandException,
     MiddlewareIdentifierException,
     MiddlewareInterface,
     MiddlewareNotExistException
 } from '../../src';
 
 import sinonChai from 'sinon-chai';
+import chaiAsPromised from 'chai-as-promised';
 
 
+use(chaiAsPromised);
 use(sinonChai);
 
 describe('CommandHandler', () =>
@@ -234,7 +237,7 @@ describe('CommandHandler', () =>
             expect(fakeMiddleware.handle).calledOnceWith(commandEventData);
         });
 
-        it('should pass the edited HandlerEventData to next middleware', () =>
+        it('should pass the edited `HandlerEventData` to next middleware', () =>
         {
             fakeMiddleware.identifier.returns('fake-middleware');
             fakeMiddleware.handle.callsFake(async (commandEventData: CommandEventData): Promise<void> =>
@@ -259,6 +262,10 @@ describe('CommandHandler', () =>
             expect(fakeCommand.handle).to.be.calledOnceWith(commandEventData);
         });
 
+        it('should throw `InvalidCommandException` when command is not registered', () =>
+        {
+            return expect(commandHandler.handle('unknown-command', commandEventData)).to.eventually.rejectedWith(InvalidCommandException);
+        });
     });
 });
 
