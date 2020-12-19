@@ -34,5 +34,8 @@
     "sinon-chai": "^3.5.0",
     "ts-node": "^9.1.1",
     "typescript": "^4.1.3"
+  },
+  "dependencies": {
+    "parse-line": "^1.1.0"
   }
 }
