@@ -350,6 +350,14 @@ describe('CommandHandler', () =>
                 expect(fakeCommand.handle).to.be.calledOnceWithExactly(sinon.match.any, 'arg1', 'arg2');
             });
 
+            it('should resolve the result of command handle', () =>
+            {
+                fakeCommand.identifier.returns('fake-command');
+                fakeCommand.handle.resolves('the-result');
+                commandHandler.registerCommand(fakeCommand);
+
+                return expect(commandHandler.handle('fake-command', commandEventData)).eventually.equals('the-result');
+            });
         });
 
 

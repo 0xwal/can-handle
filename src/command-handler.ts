@@ -73,6 +73,6 @@ export class CommandHandler
         if (command.argumentsCount() > parsedCommandLine.length) {
             throw new InvalidArgumentsException();
         }
-        command.handle(commandEventData, ...parsedCommandLine);
+        return command.handle(commandEventData, ...parsedCommandLine);
     }
 }
