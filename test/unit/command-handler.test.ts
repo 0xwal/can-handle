@@ -220,8 +220,7 @@ describe('CommandHandler', () =>
 
             it('should call global middlewares in order', async () =>
             {
-                //todo: need to make sure that the execution is in correct order
-                //if it does long operation.
+                //todo: I'm not sure how to test the async functions and its execution order
                 fakeMiddleware.identifier.returns('fake-middleware');
 
                 const anotherFakeMiddleware = sinon.stub(new FakeMiddleware());
@@ -362,30 +361,30 @@ describe('CommandHandler', () =>
             });
         });
 
+        describe('command middlewares', () =>
+        {
+            //todo: I'm not sure how to test the async functions and its execution order
+            it('should call the command middleware', async () =>
+            {
+                fakeCommand.middlewares.returns([fakeMiddleware]);
+                fakeCommand.identifier.returns('fake-command');
+                commandHandler.registerCommand(fakeCommand);
+                await commandHandler.handle('fake-command', commandEventData);
+                expect(fakeMiddleware.handle).to.be.calledOnceWithExactly(commandEventData);
+            });
+            it('should call all command middlewares', async () =>
+            {
+                const anotherFakeMiddleware = sinon.stub(new FakeMiddleware());
+                fakeCommand.identifier.returns('fake-command');
+                fakeCommand.middlewares.returns([anotherFakeMiddleware, fakeMiddleware]);
+
+                commandHandler.registerCommand(fakeCommand);
+                await commandHandler.handle('fake-command', commandEventData);
+                sinon.assert.callOrder(anotherFakeMiddleware.handle, fakeMiddleware.handle);
+            });
+        });
     });
 
-    describe('handle->command->middlewares', () =>
-    {
-        //todo: make it better
-        it('should calls the command middlewares', async () =>
-        {
-            fakeCommand.middlewares.returns([fakeMiddleware]);
-            fakeCommand.identifier.returns('fake-command');
-            commandHandler.registerCommand(fakeCommand);
-            await commandHandler.handle('fake-command', commandEventData);
-            expect(fakeMiddleware.handle).to.be.calledOnceWithExactly(commandEventData);
-        });
-        it('should call all command middlewares', async () =>
-        {
-            const anotherFakeMiddleware = sinon.stub(new FakeMiddleware());
-            fakeCommand.identifier.returns('fake-command');
-            fakeCommand.middlewares.returns([anotherFakeMiddleware, fakeMiddleware]);
-
-            commandHandler.registerCommand(fakeCommand);
-            await commandHandler.handle('fake-command',commandEventData);
-            sinon.assert.callOrder(anotherFakeMiddleware.handle, fakeMiddleware.handle);
-        });
-    });
 });
 
 
