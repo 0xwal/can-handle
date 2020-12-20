@@ -3,9 +3,18 @@
   "version": "0.0.1",
   "description": "Handle and process commands",
   "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
-    "test": "mocha -r ts-node/register \\\"test/**/*.test.ts\\\""
+    "build": "tsc",
+    "prepack": "npm run clean && npm run build",
+    "pack": "npm pack",
+    "prepublish": "npm run clean && npm run build",
+    "test": "mocha -r ts-node/register \"test/**/*.test.ts\"",
+    "clean": "rm -rf dist"
   },
+  "files": [
+    "dist/**"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/0xWaleed/command-handler.git"
