@@ -1,4 +1,5 @@
 import {CommandEventData} from './command-event-data';
+import {MiddlewareInterface} from './middleware.interface';
 
 
 export interface CommandInterface
@@ -8,4 +9,6 @@ export interface CommandInterface
     handle(commandEventData: CommandEventData, ...args: string[]): Promise<any>;
 
     argumentsCount(): number;
+
+    middlewares(): MiddlewareInterface[];
 }

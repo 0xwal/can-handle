@@ -75,6 +75,13 @@ export class CommandHandler
         if (commandObject.argumentsCount() > args.length) {
             throw new InvalidArgumentsException();
         }
+        const middlewares = commandObject.middlewares();
+
+        if (middlewares) {
+            for (const middleware of middlewares) {
+                await middleware.handle(commandEventData);
+            }
+        }
 
         return commandObject.handle(commandEventData, ...args);
     }
