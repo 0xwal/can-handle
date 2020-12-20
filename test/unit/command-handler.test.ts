@@ -236,7 +236,7 @@ describe('CommandHandler', () =>
                 sinon.assert.callOrder(fakeMiddleware.handle, anotherFakeMiddleware.handle);
             });
 
-            it('should call global middlewares with `HandlerEventData`', async () =>
+            it('should call global middlewares with `CommandEventData`', async () =>
             {
                 fakeMiddleware.identifier.returns('fake-middleware');
 
@@ -250,7 +250,7 @@ describe('CommandHandler', () =>
                 expect(fakeMiddleware.handle).calledOnceWith(commandEventData);
             });
 
-            it('should pass the edited `HandlerEventData` to next middleware', async () =>
+            it('should pass the edited `CommandEventData` to next middleware', async () =>
             {
                 fakeMiddleware.identifier.returns('fake-middleware');
                 fakeMiddleware.handle.callsFake(async (commandEventData: CommandEventData): Promise<void> =>
