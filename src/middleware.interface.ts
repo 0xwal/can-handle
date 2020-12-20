@@ -5,5 +5,5 @@ export interface MiddlewareInterface
 {
     identifier(): string;
 
-    handle(commandEventData: CommandEventData, ...args: string[]): Promise<void>;
+    handle(commandEventData: CommandEventData): Promise<void>;
 }

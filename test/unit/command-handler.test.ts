@@ -271,31 +271,6 @@ describe('CommandHandler', () =>
                 expect(anotherFakeMiddleware.handle).calledOnceWith(sinon.match({ data: 5 }));
             });
 
-            it('should pass the argument to middleware', async () =>
-            {
-                fakeMiddleware.identifier.returns('fake-middleware');
-                commandHandler.registerGlobalMiddleware(fakeMiddleware);
-
-                fakeCommand.identifier.returns('fake-command');
-                commandHandler.registerCommand(fakeCommand);
-
-                await commandHandler.handle('fake-command arg', commandEventData);
-
-                expect(fakeMiddleware.handle).to.be.calledOnceWithExactly(sinon.match.any, 'arg');
-            });
-
-            it('should pass multiple arguments in order', async () =>
-            {
-                fakeMiddleware.identifier.returns('fake-middleware');
-                commandHandler.registerGlobalMiddleware(fakeMiddleware);
-
-                fakeCommand.identifier.returns('fake-command');
-                commandHandler.registerCommand(fakeCommand);
-
-                await commandHandler.handle('fake-command arg1 arg2', commandEventData);
-
-                expect(fakeMiddleware.handle).to.be.calledOnceWithExactly(sinon.match.any, 'arg1', 'arg2');
-            });
         });
 
         describe('command', () =>

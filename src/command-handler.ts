@@ -64,7 +64,7 @@ export class CommandHandler
 
         const { command, args } = CommandHandler.parseCommandLine(commandLine);
 
-        this.invokeGlobalMiddlewares(commandEventData, args);
+        this.invokeGlobalMiddlewares(commandEventData);
 
         const commandObject = this._commands[command];
 
@@ -75,6 +75,7 @@ export class CommandHandler
         if (commandObject.argumentsCount() > args.length) {
             throw new InvalidArgumentsException();
         }
+
         const middlewares = commandObject.middlewares();
 
         if (middlewares) {
@@ -91,14 +92,14 @@ export class CommandHandler
         }
     }
 
-    private invokeGlobalMiddlewares(commandEventData: CommandEventData, parsedCommandLine: string[])
+    private async invokeGlobalMiddlewares(commandEventData: CommandEventData)
     {
         //todo: we need to make sure middlewares are called in order even with long operation
         for (const middleware in this._middlewares) {
             if (!this._middlewares.hasOwnProperty(middleware)) {
                 continue;
             }
-            this._middlewares[middleware].handle(commandEventData, ...parsedCommandLine);
+            await this._middlewares[middleware].handle(commandEventData);
         }
     }
 
