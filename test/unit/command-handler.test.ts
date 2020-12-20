@@ -366,6 +366,7 @@ describe('CommandHandler', () =>
 
     describe('handle->command->middlewares', () =>
     {
+        //todo: make it better
         it('should calls the command middlewares', async () =>
         {
             fakeCommand.middlewares.returns([fakeMiddleware]);

@@ -78,12 +78,17 @@ export class CommandHandler
         const middlewares = commandObject.middlewares();
 
         if (middlewares) {
-            for (const middleware of middlewares) {
-                await middleware.handle(commandEventData);
-            }
+            await CommandHandler.callCommandMiddlewares(middlewares, commandEventData);
         }
 
         return commandObject.handle(commandEventData, ...args);
+    }
+
+    private static async callCommandMiddlewares(middlewares: MiddlewareInterface[], commandEventData: CommandEventData)
+    {
+        for (const middleware of middlewares) {
+            await middleware.handle(commandEventData);
+        }
     }
 
     private invokeGlobalMiddlewares(commandEventData: CommandEventData, parsedCommandLine: string[])
