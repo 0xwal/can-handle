@@ -25,14 +25,17 @@ client.on('message', async (message: Message) =>
     }
 
     content = content.substr(1);
+
     try {
 
         const result = await commandHandler.handle(content, new CommandEventData());
 
-        message.reply(result);
+        await message.reply(result);
 
     } catch (e) {
-        message.reply(e.message);
+
+        await message.reply(e.message);
+
     }
 
 });
