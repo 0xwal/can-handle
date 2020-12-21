@@ -288,6 +288,30 @@ describe('CommandHandler', () =>
                 expect(fakeMiddleware.handle).to.be.calledOnceWithExactly(sinon.match.any, fakeCommand);
                 expect(anotherFakeMiddleware.handle).to.be.calledOnceWithExactly(sinon.match.any, fakeCommand);
             });
+
+            it('should not call the middleware if command is not valid', async () =>
+            {
+                fakeMiddleware.identifier.returns('fake-middleware');
+
+                commandHandler.registerGlobalMiddleware(fakeMiddleware);
+
+                commandHandler.handle('fake-unknown-command', commandEventData);
+
+                expect(fakeMiddleware.handle).not.to.be.called;
+            });
+
+            it('should not call global middlewares when arguments length is not valid', () =>
+            {
+                fakeCommand.argumentsCount.returns(2);
+                fakeCommand.identifier.returns('fake-command');
+                commandHandler.registerCommand(fakeCommand);
+
+                fakeMiddleware.identifier.returns('fake-middleware');
+                commandHandler.registerGlobalMiddleware(fakeMiddleware);
+
+                commandHandler.handle('fake-command arg1', commandEventData);
+                expect(fakeMiddleware.handle).not.to.be.called;
+            });
         });
 
         describe('command', () =>

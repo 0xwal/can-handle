@@ -64,11 +64,7 @@ export class CommandHandler
 
         const { command, args } = CommandHandler.parseCommandLine(commandLine);
 
-
         const commandObject = this._commands[command];
-
-        await this.invokeGlobalMiddlewares(commandEventData, commandObject);
-
 
         if (!commandObject) {
             throw new InvalidCommandException();
@@ -77,6 +73,8 @@ export class CommandHandler
         if (commandObject.argumentsCount() > args.length) {
             throw new InvalidArgumentsException();
         }
+
+        await this.invokeGlobalMiddlewares(commandEventData, commandObject);
 
         const middlewares = commandObject.middlewares();
 
