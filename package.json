@@ -1,6 +1,6 @@
 {
   "name": "can-handle",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Handle and process commands",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
