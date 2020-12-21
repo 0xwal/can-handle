@@ -324,12 +324,12 @@ describe('CommandHandler', () =>
                 expect(fakeCommand.handle).to.be.calledOnceWith(commandEventData);
             });
 
-            it('should throw `InvalidCommandException` when command is not registered', () =>
+            it('should reject with `InvalidCommandException` when command is not registered', () =>
             {
                 return expect(commandHandler.handle('unknown-command', commandEventData)).to.eventually.rejectedWith(InvalidCommandException);
             });
 
-            it('should throw exception when command arguments is smaller than the required arguments', () =>
+            it('should reject with `InvalidArgumentException` when command arguments is smaller than the required arguments', () =>
             {
                 fakeCommand.identifier.returns('fake-command');
                 fakeCommand.argumentsCount.returns(1);
