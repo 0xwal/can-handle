@@ -1,0 +1,15 @@
+{
+  "name": "command-line-example",
+  "version": "1.0.0",
+  "description": "Command line app using can-handle as an example",
+  "main": "index.js",
+  "scripts": {
+    "start": "node main.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "can-handle": "0.0.2"
+  }
+}
