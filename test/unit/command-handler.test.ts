@@ -271,6 +271,23 @@ describe('CommandHandler', () =>
                 expect(anotherFakeMiddleware.handle).calledOnceWith(sinon.match({ data: 5 }));
             });
 
+            it('should pass the command as the second argument', async () =>
+            {
+                fakeCommand.identifier.returns('fake-command');
+                commandHandler.registerCommand(fakeCommand);
+
+                fakeMiddleware.identifier.returns('fake-middleware');
+                commandHandler.registerGlobalMiddleware(fakeMiddleware);
+
+                const anotherFakeMiddleware = sinon.stub(new FakeMiddleware());
+                anotherFakeMiddleware.identifier.returns('another-fake-middleware');
+                commandHandler.registerGlobalMiddleware(anotherFakeMiddleware);
+
+                await commandHandler.handle('fake-command', commandEventData);
+
+                expect(fakeMiddleware.handle).to.be.calledOnceWithExactly(sinon.match.any, fakeCommand);
+                expect(anotherFakeMiddleware.handle).to.be.calledOnceWithExactly(sinon.match.any, fakeCommand);
+            });
         });
 
         describe('command', () =>
@@ -345,8 +362,9 @@ describe('CommandHandler', () =>
                 fakeCommand.identifier.returns('fake-command');
                 commandHandler.registerCommand(fakeCommand);
                 await commandHandler.handle('fake-command', commandEventData);
-                expect(fakeMiddleware.handle).to.be.calledOnceWithExactly(commandEventData);
+                expect(fakeMiddleware.handle).to.be.calledOnceWith(commandEventData);
             });
+
             it('should call all command middlewares', async () =>
             {
                 const anotherFakeMiddleware = sinon.stub(new FakeMiddleware());
@@ -356,6 +374,25 @@ describe('CommandHandler', () =>
                 commandHandler.registerCommand(fakeCommand);
                 await commandHandler.handle('fake-command', commandEventData);
                 sinon.assert.callOrder(anotherFakeMiddleware.handle, fakeMiddleware.handle);
+            });
+
+            it('should pass the command as the second argument', async () =>
+            {
+                fakeCommand.identifier.returns('fake-command');
+
+                fakeMiddleware.identifier.returns('fake-middleware');
+
+                const anotherFakeMiddleware = sinon.stub(new FakeMiddleware());
+                anotherFakeMiddleware.identifier.returns('another-fake-middleware');
+
+                fakeCommand.middlewares.returns([fakeMiddleware, anotherFakeMiddleware]);
+
+                commandHandler.registerCommand(fakeCommand);
+
+                await commandHandler.handle('fake-command', commandEventData);
+
+                expect(fakeMiddleware.handle).to.be.calledOnceWithExactly(sinon.match.any, fakeCommand);
+                expect(anotherFakeMiddleware.handle).to.be.calledOnceWithExactly(sinon.match.any, fakeCommand);
             });
         });
     });

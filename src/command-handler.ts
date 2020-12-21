@@ -64,9 +64,11 @@ export class CommandHandler
 
         const { command, args } = CommandHandler.parseCommandLine(commandLine);
 
-        this.invokeGlobalMiddlewares(commandEventData);
 
         const commandObject = this._commands[command];
+
+        await this.invokeGlobalMiddlewares(commandEventData, commandObject);
+
 
         if (!commandObject) {
             throw new InvalidCommandException();
@@ -79,27 +81,27 @@ export class CommandHandler
         const middlewares = commandObject.middlewares();
 
         if (middlewares) {
-            await CommandHandler.callCommandMiddlewares(middlewares, commandEventData);
+            await CommandHandler.callCommandMiddlewares(commandObject, commandEventData);
         }
 
         return commandObject.handle(commandEventData, ...args);
     }
 
-    private static async callCommandMiddlewares(middlewares: MiddlewareInterface[], commandEventData: CommandEventData)
+    private static async callCommandMiddlewares(command: CommandInterface, commandEventData: CommandEventData)
     {
-        for (const middleware of middlewares) {
-            await middleware.handle(commandEventData);
+        for (const middleware of command.middlewares()) {
+            await middleware.handle(commandEventData, command);
         }
     }
 
-    private async invokeGlobalMiddlewares(commandEventData: CommandEventData)
+    private async invokeGlobalMiddlewares(commandEventData: CommandEventData, command: CommandInterface)
     {
         //todo: we need to make sure middlewares are called in order even with long operation
         for (const middleware in this._middlewares) {
             if (!this._middlewares.hasOwnProperty(middleware)) {
                 continue;
             }
-            await this._middlewares[middleware].handle(commandEventData);
+            await this._middlewares[middleware].handle(commandEventData, command);
         }
     }
 
