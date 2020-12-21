@@ -13,6 +13,7 @@
     "typescript": "^4.1.3"
   },
   "dependencies": {
+    "can-handle": "0.0.1",
     "discord.js": "^12.5.1"
   }
 }

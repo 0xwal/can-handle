@@ -11,10 +11,12 @@ const commandHandler = new CommandHandler();
 
 
 //register commands so identifier can be used in Discord chat
+//also you can register as many as you want.
 commandHandler.registerCommand(new HelloCommand());
 commandHandler.registerCommand(new ByeCommand());
 
 //register global middlewares that will run on all registered commands
+//you can register as many as you want
 commandHandler.registerGlobalMiddleware(new LogMiddleware());
 
 client.on('message', async (message: Message) =>

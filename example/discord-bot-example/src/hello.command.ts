@@ -5,12 +5,12 @@ export class HelloCommand implements CommandInterface
 {
     argumentsCount(): number
     {
-        return 0;
+        return 1;
     }
 
-    async handle(commandEventData: CommandEventData, ...args: string[]): Promise<any>
+    async handle(commandEventData: CommandEventData, name: string): Promise<any>
     {
-        return 'Hi';
+        return `Hi ${name}`;
     }
 
     identifier(): string
